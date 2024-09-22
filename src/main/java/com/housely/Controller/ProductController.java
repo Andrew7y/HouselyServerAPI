@@ -75,7 +75,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/cat/{categoryName}/products/{productId}")
+    @DeleteMapping("/{categoryName}/products/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable String categoryName, @PathVariable String productId) {
         try{
             Category category = categoryService.findByCategoryName(categoryName);
