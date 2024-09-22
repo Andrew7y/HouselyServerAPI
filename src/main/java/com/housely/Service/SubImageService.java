@@ -22,11 +22,11 @@ public class SubImageService {
         return subImageRepository.save(subImage);
     }
 
-    public SubImageInRoom findById(Long id) {
+    public SubImageInRoom findById(String id) {
         return subImageRepository.findById(id).orElseThrow(() -> new RuntimeException("SubImage not found"));
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         subImageRepository.deleteById(id);
     }
 }

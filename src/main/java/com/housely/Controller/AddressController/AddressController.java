@@ -24,7 +24,7 @@ public class AddressController {
         return paymentAddressService.findAll();
     }
 
-    @GetMapping("/shippings")
+    @GetMapping("/shipping")
     public @ResponseBody List<ShippingAddress> getAllShippingAddress() {
         return shippingAddressService.findAll();
     }

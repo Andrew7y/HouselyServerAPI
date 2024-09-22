@@ -27,6 +27,10 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
     }
 
+    public Category findByCategoryName(String categoryName){
+        return categoryRepository.findByCategoryName(categoryName).orElseThrow(() -> new RuntimeException("Category not found"));
+    }
+
     public void deleteById(Long id){
         categoryRepository.deleteById(id);
     }
