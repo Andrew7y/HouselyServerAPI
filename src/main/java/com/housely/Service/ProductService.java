@@ -35,6 +35,10 @@ public class ProductService {
         return productRepository.findCategoriesByProductCode(productCode);
     }
 
+    public List<Product> findByRoomId(Long roomId) {
+        return productRepository.findByRoomId(roomId);
+    }
+
     public void deleteById(String id) {
         productRepository.deleteById(id);
     }

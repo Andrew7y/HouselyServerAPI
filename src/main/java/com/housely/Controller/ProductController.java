@@ -126,4 +126,13 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/rooms/{roomId}/products")
+    public ResponseEntity<?> getProductsByRoomId(@PathVariable Long roomId) {
+        try{
+            return new ResponseEntity<>(productService.findByRoomId(roomId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

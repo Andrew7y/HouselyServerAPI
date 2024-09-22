@@ -17,19 +17,19 @@ public class SubImageInRoom {
     private String subImageBase64;
 
 
-    // Relationship with Room
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomId", nullable = false)
-    private Room room;
-
-    // Relationship with Product
-    @ManyToMany
-    @JoinTable(
-            name = "productInSubImage",
-            joinColumns = @JoinColumn(name = "subImageId"),
-            inverseJoinColumns = @JoinColumn(name = "productCode"))
-    private List<Product> productsInSubImage;
+//    // Relationship with Room
+//    @JsonBackReference
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "roomId", nullable = false)
+//    private Room room;
+//
+//    // Relationship with Product
+//    @ManyToMany
+//    @JoinTable(
+//            name = "productInSubImage",
+//            joinColumns = @JoinColumn(name = "subImageId"),
+//            inverseJoinColumns = @JoinColumn(name = "productCode"))
+//    private List<Product> productsInSubImage;
 
 
 }

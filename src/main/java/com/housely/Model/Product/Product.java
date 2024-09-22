@@ -1,6 +1,7 @@
 package com.housely.Model.Product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.housely.Model.Cart.CartItem;
 import com.housely.Model.Category.Category;
@@ -42,7 +43,9 @@ public class Product {
     private List<Review> reviews;
 
     // Relationship with Room
-    @ManyToMany(mappedBy = "productInRooms")
+
+    @ManyToMany(mappedBy = "productInRooms", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("productInRooms")
     private List<Room> rooms;
 
     // Relationship with Category
@@ -51,7 +54,8 @@ public class Product {
     private List<Category> categories;
 
     // Relationship with FavoriteList
-    @ManyToMany(mappedBy = "productInFavoriteList")
+    @ManyToMany(mappedBy = "productInFavoriteList", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("productInFavoriteList")
     private List<FavoriteList> favoriteLists;
 
     // Relationship with CartItem
@@ -64,8 +68,5 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
 
-    // Relationship with SubImageInRoom
-    @ManyToMany(mappedBy = "productsInSubImage")
-    private List<SubImageInRoom> subImageInRooms;
 
 }
