@@ -1,5 +1,6 @@
 package com.housely.Service;
 
+import com.housely.Model.Category.Category;
 import com.housely.Model.Product.Product;
 import com.housely.Repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class ProductService {
 
     public List<Product> findByCategoryName(String categoryName) {
         return productRepository.findByCategoryName(categoryName);
+    }
+
+    public List<Category> findCategoriesByProductCode(String productCode) {
+        return productRepository.findCategoriesByProductCode(productCode);
     }
 
     public void deleteById(String id) {

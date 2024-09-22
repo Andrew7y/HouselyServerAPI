@@ -55,23 +55,23 @@ public class AddressController {
         return String.format("Shipping Address Id:%d was delete successfully!", id);
     }
 
-    @PostMapping("/payment")
+    @PostMapping("/payment/add")
     public @ResponseBody PaymentAddress addPaymentAddress(@RequestBody PaymentAddress paymentAddress) {
         return paymentAddressService.save(paymentAddress);
     }
 
-    @PostMapping("/shipping")
+    @PostMapping("/shipping/add")
     public @ResponseBody ShippingAddress addShippingAddress(@RequestBody ShippingAddress shippingAddress) {
         return shippingAddressService.save(shippingAddress);
     }
 
-    @PutMapping("/payment/{id}")
+    @PutMapping("/payment/edit/{id}")
     public @ResponseBody PaymentAddress updatePaymentAddress(@PathVariable Long id, @RequestBody PaymentAddress paymentAddress) {
         paymentAddress.setPaymentAddressId(id);
         return paymentAddressService.save(paymentAddress);
     }
 
-    @PutMapping("/shipping/{id}")
+    @PutMapping("/shipping/edit/{id}")
     public @ResponseBody ShippingAddress updateShippingAddress(@PathVariable Long id, @RequestBody ShippingAddress shippingAddress) {
         shippingAddress.setShippingAddressId(id);
         return shippingAddressService.save(shippingAddress);

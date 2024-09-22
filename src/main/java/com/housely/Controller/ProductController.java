@@ -4,7 +4,6 @@ import com.housely.Model.Category.Category;
 import com.housely.Model.Product.Product;
 import com.housely.Service.CategoryService;
 import com.housely.Service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,46 @@ public class ProductController {
         return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
-//    @GetMapping("/products/{productId}")
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable String productId) {
+        try{
+            return new ResponseEntity<>(productService.findById(productId), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/products/add")
+    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/products/update/{productId}")
+    public ResponseEntity<?> updateProduct(@RequestBody Product product, @PathVariable String productId) {
+        try {
+            productService.findById(productId);
+            product.setProductCode(productId);
+            return new ResponseEntity<>(productService.save(product), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/products/delete/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable String productId) {
+        try {
+            productService.findCategoriesByProductCode(productId).forEach(
+                    category -> category.getProductInCategories().
+                            remove(productService.findById(productId)
+                            ));
+            productService.deleteById(productId);
+            return new ResponseEntity<>("Product deleted successfully", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
 
     @GetMapping("/{categoryName}/products")
     public ResponseEntity<?> getProductsByCategoryName(@PathVariable String categoryName) {
@@ -50,7 +88,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/{categoryName}/products")
+    @PostMapping("/{categoryName}/products/add")
     public ResponseEntity<?> addProduct(@RequestBody Product product, @PathVariable String categoryName) {
         try{
             Category category = categoryService.findByCategoryName(categoryName);
@@ -62,7 +100,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/{categoryName}/products/{productId}")
+    @PutMapping("/{categoryName}/products/edit/{productId}")
     public ResponseEntity<?> updateProduct(@RequestBody Product product, @PathVariable String categoryName, @PathVariable String productId) {
         try{
             Category category = categoryService.findByCategoryName(categoryName);
@@ -75,7 +113,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{categoryName}/products/{productId}")
+    @DeleteMapping("/{categoryName}/products/delete/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable String categoryName, @PathVariable String productId) {
         try{
             Category category = categoryService.findByCategoryName(categoryName);
@@ -87,8 +125,5 @@ public class ProductController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 
 }

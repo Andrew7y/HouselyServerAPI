@@ -7,9 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.categoryName = :categoryName")
     List<Product> findByCategoryName(@Param("categoryName") String categoryName);
+
+    @Query("SELECT p.categories FROM Product p WHERE p.productCode = :productCode")
+    List<Category> findCategoriesByProductCode(@Param("productCode") String productCode);
+
+    @Query("SELECT p FROM Product p JOIN p.rooms r WHERE r.id = :roomId")
+    List<Product> findByRoomId(@Param("roomId") Long roomId);
 }
