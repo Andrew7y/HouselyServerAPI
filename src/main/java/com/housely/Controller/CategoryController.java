@@ -12,38 +12,70 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
-    public @ResponseBody List<Category> getAllCategory() {
-        return categoryService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public @ResponseBody Category getCategoryById(@PathVariable Long id) {
-        return categoryService.findById(id);
-    }
-
-    @PostMapping
-    public @ResponseBody Category addCategory(@RequestBody Category category) {
-        return categoryService.save(category);
-    }
-
-    @PutMapping("/{id}")
-    public @ResponseBody Category updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        category.setCategoryId(id);
-        return categoryService.save(category);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<?> getAllCategories() {
         try {
-            categoryService.deleteById(id);
-            return ResponseEntity.ok(String.format("Category Id:%d was deleted successfully!", id));
+            List<Category> categories = categoryService.findAll();
+            return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(String.format("Category Id:%d not found!", id));
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<?> getCategoryById(@PathVariable Long categoryId) {
+        try {
+            Category category = categoryService.findById(categoryId);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addCategory(@RequestBody Category category) {
+        try {
+            Category newCategory = categoryService.save(category);
+            return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/{categoryId}")
+    public ResponseEntity<?> updateCategory(@RequestBody Category category, @PathVariable Long categoryId) {
+        try {
+            category.setCategoryId(categoryId);
+            Category updatedCategory = categoryService.save(category);
+            return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId) {
+        try {
+            categoryService.deleteById(categoryId);
+            return new ResponseEntity<>("Category Id:" + categoryId + " was deleted successfully!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/search/{categoryName}")
+    public ResponseEntity<?> searchCategory(@PathVariable String categoryName) {
+        try {
+            List<Category> categories = categoryService.search(categoryName);
+            return new ResponseEntity<>(categories, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

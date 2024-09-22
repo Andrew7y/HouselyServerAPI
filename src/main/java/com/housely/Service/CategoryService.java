@@ -31,6 +31,10 @@ public class CategoryService {
         return categoryRepository.findByCategoryName(categoryName).orElseThrow(() -> new RuntimeException("Category not found"));
     }
 
+    public List<Category> search(String keyword){
+        return categoryRepository.search(keyword);
+    }
+
     public void deleteById(Long id){
         categoryRepository.deleteById(id);
     }
