@@ -126,6 +126,7 @@ public class ProductController {
         }
     }
 
+
     @GetMapping("/rooms/{roomId}/products")
     public ResponseEntity<?> getProductsByRoomId(@PathVariable Long roomId) {
         try{
@@ -134,5 +135,7 @@ public class ProductController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+
 
 }

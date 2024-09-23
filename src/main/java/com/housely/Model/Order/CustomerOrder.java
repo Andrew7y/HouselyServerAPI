@@ -1,6 +1,7 @@
 package com.housely.Model.Order;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.housely.Model.Card.CreditCard;
 import com.housely.Model.Customer.Customer;
@@ -21,35 +22,37 @@ public class CustomerOrder {
     private Long orderId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderDate;
-    @Column(nullable = false)
+
     private String paymentStatus;
-    @Column(nullable = false)
+
     private double totalAmount;
 
 
     // Relationship with CreditCard
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creditCardNumber", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "creditCardNumber")
+    @JsonIgnoreProperties("customerOrders")
     private CreditCard creditCard;
 
     // Relationship with Customer
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    @JsonIgnoreProperties("customerOrders")
     private Customer customer;
 
     // Relationship with OrderItem
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customerOrder",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customerOrder")
+    @OneToMany(mappedBy = "customerOrder",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
 
     // Relationship with PaymentAddress
-    @OneToOne(mappedBy = "customerOrder")
+    @OneToOne(mappedBy = "customerOrder", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customerOrder")
     private PaymentAddress paymentAddress;
 
-    // Relationship with Shipping
+//    // Relationship with Shipping
     @OneToOne(mappedBy = "customerOrder")
+    @JsonIgnoreProperties("customerOrder")
     private Shipping shipping;
 
 }

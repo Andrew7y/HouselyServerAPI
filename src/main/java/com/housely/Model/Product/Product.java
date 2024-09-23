@@ -25,21 +25,20 @@ public class Product {
     private String brandName ;
     private String productName ;
     private String price;
-    @Column(nullable = true)
     private String color;
     private String size;
     private int quantity;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String imageBase64;
+//    @Lob
+//    @Column(columnDefinition = "LONGTEXT")
+//    private String imageBase64;
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
 
     // Relationship with Review
-    @JsonManagedReference
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("product")
     private List<Review> reviews;
 
     // Relationship with Room
@@ -50,7 +49,7 @@ public class Product {
 
     // Relationship with Category
     @ManyToMany(mappedBy = "productInCategories")
-    @JsonBackReference
+    @JsonIgnoreProperties("productInCategories")
     private List<Category> categories;
 
     // Relationship with FavoriteList
@@ -59,13 +58,13 @@ public class Product {
     private List<FavoriteList> favoriteLists;
 
     // Relationship with CartItem
-    @JsonManagedReference
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("product")
     private List<CartItem> cartItems;
 
     // Relationship with OrderItem
-    @JsonManagedReference
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("product")
     private List<OrderItem> orderItems;
 
 

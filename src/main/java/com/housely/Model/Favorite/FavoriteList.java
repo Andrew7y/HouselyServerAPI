@@ -1,6 +1,7 @@
 package com.housely.Model.Favorite;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.housely.Model.Customer.Customer;
 import com.housely.Model.Product.Product;
 import jakarta.persistence.*;
@@ -24,16 +25,17 @@ public class FavoriteList {
 
 
     // Relationship with Customer
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    @JsonIgnoreProperties("favorites")
     private Customer customer;
 
     // Relationship with Product
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favoriteListItem",
             joinColumns = @JoinColumn(name = "favoriteListId"),
             inverseJoinColumns = @JoinColumn(name = "productCode"))
+    @JsonIgnoreProperties("favoriteLists")
     private List<Product> productInFavoriteList;
 }

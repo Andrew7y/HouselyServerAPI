@@ -1,5 +1,6 @@
 package com.housely.Model.Category;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.housely.Model.Product.Product;
 import jakarta.persistence.*;
@@ -27,7 +28,7 @@ public class Category {
             name = "productCategory",
             joinColumns = @JoinColumn(name = "categoryId"),
             inverseJoinColumns = @JoinColumn(name = "productCode"))
-    @JsonManagedReference
+    @JsonIgnoreProperties("categories")
     private List<Product> productInCategories;
 
 }

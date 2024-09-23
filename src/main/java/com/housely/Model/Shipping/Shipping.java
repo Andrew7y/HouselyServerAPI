@@ -1,5 +1,6 @@
 package com.housely.Model.Shipping;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.housely.Model.Address.ShippingAddress;
 import com.housely.Model.Order.CustomerOrder;
 import jakarta.persistence.*;
@@ -19,28 +20,30 @@ public class Shipping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shippingId;
-    @Column(nullable = false)
+
     private String targetFirstName;
-    @Column(nullable = false)
+
     private String targetLastName;
-    @Column(nullable = false)
+
     private String targetPhoneNumber;
-    @Column(nullable = false)
+
     private String shippingStatus;
-    @Column(nullable = false)
+
     private LocalDate shippingDate;
-    @Column(nullable = false)
+
     private String shippingMethod;
-    @Column(nullable = false)
+
     private String trackingNumber;
 
 
     // Relationship with CustomerOrder
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "orderId")
+    @JsonIgnoreProperties("shipping")
     private CustomerOrder customerOrder;
 
-    // Relationship with ShippingAddress
+//    // Relationship with ShippingAddress
     @OneToOne(mappedBy = "shipping")
+    @JsonIgnoreProperties("shipping")
     private ShippingAddress shippingAddress;
 }

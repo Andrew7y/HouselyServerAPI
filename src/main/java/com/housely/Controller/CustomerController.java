@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/users")
 public class CustomerController {
     private final CustomerService customerService;
-
-
+    @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
+
 
     @GetMapping
     public List<Customer> getAllCustomers() {
@@ -33,9 +33,16 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.save(customer), HttpStatus.CREATED);
+        try {
+            if(customerService.existsByEmail(customer.getEmail())){
+                return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(customerService.save(customer), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/update/{customerId}")
@@ -54,6 +61,15 @@ public class CustomerController {
         try {
             customerService.deleteById(customerId);
             return new ResponseEntity<>("Customer Id:" + customerId + " was delete successfully!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{email}")
+    public ResponseEntity<?> getCustomerByEmail(@PathVariable String email) {
+        try {
+            return new ResponseEntity<>(customerService.findByEmail(email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

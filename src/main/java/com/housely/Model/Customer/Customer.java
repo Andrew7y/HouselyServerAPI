@@ -1,5 +1,6 @@
 package com.housely.Model.Customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.housely.Model.Address.PaymentAddress;
 import com.housely.Model.Address.ShippingAddress;
@@ -15,55 +16,51 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
     private String firstName;
-    @Column(nullable = false)
-    private String lastName;
-    @Column(nullable = false)
-    private String phone;
-    @Column(nullable = false)
+
     private String email;
-    @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
+
+    private String password;
 
 
     // Relationship
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private List<Review> reviews;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private List<FavoriteList> favorites;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customerCreditCard",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "creditCardNumber"))
+    @JsonIgnoreProperties("customers")
     private List<CreditCard> creditCards;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private List<CustomerOrder> customerOrders;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private PaymentAddress paymentAddress;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private List<ShippingAddress> shippingAddresses;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customer")
     private Cart cart;
 
 

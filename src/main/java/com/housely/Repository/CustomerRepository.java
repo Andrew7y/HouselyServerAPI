@@ -12,4 +12,9 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT f FROM FavoriteList f WHERE f.customer.id = :customerId")
     Optional<List<FavoriteList>> findFavoritesByCustomerId(@Param("customerId") Long customerId);
+
+    Optional<Customer> findByEmail(String email);
+    boolean existsByEmail(String email);
+    Optional<Customer> findByPassword(String password);
+    Optional<Customer> findByEmailAndPassword(String email, String password);
 }

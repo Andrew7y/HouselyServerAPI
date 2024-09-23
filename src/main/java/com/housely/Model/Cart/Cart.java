@@ -1,5 +1,6 @@
 package com.housely.Model.Cart;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.housely.Model.Customer.Customer;
 import jakarta.persistence.*;
@@ -14,12 +15,13 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fkToCusId", referencedColumnName = "id")
+    @JsonIgnoreProperties("cart")
     private Customer customer;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("cart")
     private List<CartItem> cartItems;
 
 }

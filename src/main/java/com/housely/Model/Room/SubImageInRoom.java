@@ -12,9 +12,9 @@ import java.util.List;
 public class SubImageInRoom {
     @Id
     private String subImageId;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String subImageBase64;
+//    @Lob
+//    @Column(columnDefinition = "LONGTEXT")
+//    private String subImageBase64;
 
 
 //    // Relationship with Room

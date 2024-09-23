@@ -31,7 +31,23 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-//    public List<FavoriteList> findFavoritesByCustomerId(Long customerId){
-//        return customerRepository.findFavoritesByCustomerId(customerId).orElse(null);
-//    }
+    public Customer findByEmail(String email){
+        return customerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public Customer findByPassword(String password){
+        return customerRepository.findByPassword(password)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public Customer findByEmailAndPassword(String email, String password){
+        return customerRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public boolean existsByEmail(String email){
+        return customerRepository.existsByEmail(email);
+    }
+
 }

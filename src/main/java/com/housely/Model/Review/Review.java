@@ -1,6 +1,7 @@
 package com.housely.Model.Review;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.housely.Model.Customer.Customer;
 import com.housely.Model.Product.Product;
 import jakarta.persistence.*;
@@ -22,7 +23,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private double rating;
     private String comment;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,15 +31,15 @@ public class Review {
 
 
     // Relationship with Customer
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    @JsonIgnoreProperties("reviews")
     private Customer customer;
 
     // Relationship with Product
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productCode", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "productCode")
+    @JsonIgnoreProperties("reviews")
     private Product product;
 
 }

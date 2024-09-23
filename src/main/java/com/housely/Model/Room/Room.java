@@ -23,10 +23,10 @@ public class Room {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String description;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String imageBase64;
-    @Column(nullable = false)
+//    @Lob
+////    @Column(columnDefinition = "LONGTEXT")
+////    private String imageBase64;
+//    @Column(nullable = false)
     private String roomName;
 
 

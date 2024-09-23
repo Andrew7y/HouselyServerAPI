@@ -1,5 +1,6 @@
 package com.housely.Model.Address;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.housely.Model.Customer.Customer;
 import com.housely.Model.Order.CustomerOrder;
 import jakarta.persistence.*;
@@ -17,33 +18,35 @@ public class PaymentAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentAddressId;
-    @Column(nullable = false)
+
     private String firstName;
-    @Column(nullable = false)
+
     private String lastName;
-    @Column(nullable = false)
+
     private String country;
-    @Column(nullable = false)
+
     private String province;
-    @Column(nullable = false)
+
     private String district;
-    @Column(nullable = false)
+
     private String subDistrict;
-    @Column(nullable = false)
+
     private String houseNumber;
     private String streetAlleyVillage;
-    @Column(nullable = false)
+
     private String zipCode;
-    @Column(nullable = false)
+
     private String phoneNumber;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fkToOrderId", referencedColumnName = "orderId")
+    @JsonIgnoreProperties("paymentAddress")
     private CustomerOrder customerOrder;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "fkToCusId", referencedColumnName = "id")
+    @JsonIgnoreProperties("paymentAddress")
     private Customer customer;
 
 }

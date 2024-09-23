@@ -1,6 +1,7 @@
 package com.housely.Model.Order;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.housely.Model.Product.Product;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,17 +15,17 @@ public class OrderItem {
 
 
     // Relationship with CustomerOrder
-    @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
+    @JsonIgnoreProperties("orderItems")
     private CustomerOrder customerOrder;
 
     // Relationship with Product
-    @JsonBackReference
     @ManyToOne
     @MapsId("productCode")
     @JoinColumn(name = "product_code")
+    @JsonIgnoreProperties("orderItems")
     private Product product;
 
 }
